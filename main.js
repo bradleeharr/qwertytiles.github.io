@@ -19,6 +19,45 @@ let speed = 60;
 let fps = 60;
 let previousTime = performance.now();
 
+const commonWordsList = [
+    "the", "and", "you", "i", "he", "she", "it", "we", "they", "is",
+    "are", "have", "do", "can", "was", "were", "not", "that", "this", "here",
+    "there", "now", "but", "or", "for", "to", "with", "from", "in", "on",
+    "at", "by", "about", "into", "over", "under", "between", "among", "through",
+    "before", "after", "during", "above", "below", "next", "last", "first",
+    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+    "ten", "good", "bad", "happy", "sad", "big", "small", "new", "old",
+    "hot", "cold", "high", "low", "day", "night", "sun", "moon", "water",
+    "fire", "air", "earth", "food", "love", "hate", "friend", "enemy", "work",
+    "play", "study", "learn", "eat", "drink", "sleep", "run", "walk", "talk",
+    "listen", "see", "hear", "touch", "feel", "think", "know", "believe",
+    "here", "now", "but", "or", "with", "from", "in", "on", "at", "by",
+    "about", "into", "over", "under", "before", "after", "above", "below",
+    "next", "last", "first", "good", "bad", "happy", "sad", "big", "small",
+    "new", "old", "hot", "cold", "high", "low", "day", "night", "sun", "moon",
+    "water", "fire", "air", "earth", "food", "love", "hate", "friend", "enemy",
+    "work", "play", "study", "learn", "eat", "drink", "sleep", "run", "walk",
+    "talk", "listen", "see", "hear", "touch", "feel", "think", "know", "believe"
+  ];  
+  const rarerWordsList = [
+    "aberration", "obfuscate", "perspicacious", "quixotic", "recalcitrant",
+    "sycophant", "verisimilitude", "zeitgeist", "abstruse", "capricious",
+    "dearth", "ebullient", "facetious", "garrulous", "harangue", "ineffable",
+    "juxtapose", "kowtow", "languid", "mellifluous", "nebulous", "ostracize",
+    "pernicious", "quotidian", "reticent", "sagacious", "tenuous", "ubiquitous",
+    "vacillate", "wistful", "xenophobe", "yuxtaposition", "zephyr",
+    "acquiesce", "bombastic", "cacophony", "disparate", "ephemeral", "fecund",
+    "garrulity", "harbinger", "ineffable", "juxtaposition", "kleptomaniac",
+    "labyrinthine", "mellifluous", "nebulous", "obsequious", "pernicious",
+    "quixotry", "rhapsody", "salient", "trepidation", "ubiquity", "verbose",
+    "whimsical", "xenophile", "yearn", "zenith",
+    "loquacious", "serendipity", "panacea", "ephemeral", "effervescent", "quintessential", "aberrant", "luminous", "ambivalent", "cacophony",
+    "serendipitous", "magnanimous", "melancholy", "vicarious", "perfidious", "ineffable", "ephemeral", "resplendent", "ubiquity", "insidious"
+  ];
+const commonWords = commonWordsList.map(word => word + " ");
+const rarerWords = rarerWordsList.map(word => word + " ");
+
+
 function toggleSound() {
     isSoundMuted = !isSoundMuted;
     if (isSoundMuted) {
@@ -27,7 +66,6 @@ function toggleSound() {
         labelSound.classList.remove("muted");
     }
 }
-
 
 function update(timeStamp) {
     fps = 1000 / (timeStamp - previousTime);
@@ -58,6 +96,30 @@ function update(timeStamp) {
     }
 }
 
+function getRandomCommonWord() {
+    const randomIndex = Math.floor(Math.random() * commonWords.length);
+    return commonWords[randomIndex];
+  }
+  
+function getRandomRarerWord() {
+const randomIndex = Math.floor(Math.random() * rarerWords.length);
+return rarerWords[randomIndex];
+}
+let currentWord = getRandomCommonWord(); 
+let letIdx = 0;
+function getLetter() {
+    console.log(currentWord);
+    console.log("Length", currentWord.length)
+    console.log(letIdx);
+    let letter = currentWord[letIdx++];
+    if (letIdx == currentWord.length) {
+        Math.floor(Math.random() * 5) != 1 ? currentWord = getRandomCommonWord() : currentWord = getRandomRarerWord();
+        letIdx = 0;
+    }
+    return letter;
+    
+}
+
 function createtile() {
     let tile = document.createElement("div");
     tile.className = "tile";
@@ -66,9 +128,20 @@ function createtile() {
         n = Math.floor(Math.random() * 5);
     }
     last = n;
-    let l = letters[Math.floor(Math.random() * 25)];
-    tile.innerHTML = '<div class="letter">' + l + '</div>';
-    next.push(l);
+
+    // GetLetter
+    let letter;
+    if (gamemode[2].checked) {
+        letter = getLetter();
+    } 
+    else {
+        letter = letters[Math.floor(Math.random() * 25)];
+    }
+    next.push(letter);
+
+
+    tile.innerHTML = '<div class="letter">' + letter + '</div>';
+
     if (position.length > 0) {
         position.push(position[position.length - 1] - 20);
     } else {
@@ -103,6 +176,7 @@ function replay() {
     app2.style.display = "none";
     appstart.style.display = "none";
     previousTime = performance.now();
+    
     createtile();
     requestAnimationFrame(update);
 }
@@ -131,7 +205,7 @@ function presskey(kp) {
                 speed *= 1.01;
             }
             if (gamemode[2].checked) {
-                speed *= 1.03;
+                speed *= 1.001;
             }
             playSound();
         } else {
@@ -193,8 +267,8 @@ var tones = [392.00, 311.13, 293.66, 261.63, 261.63, 293.66, 311.13, 261.63, 311
 for (var t = 0; t < tones.length; t++) {
     var arr = [];
     var samples = context.sampleRate * seconds;
-    endOfFadeIn = samples / 4;
-    startOfFadeOut = samples * 3 / 4;
+    endOfFadeIn = samples / 8;
+    startOfFadeOut = samples * 7 / 8;
 
     let envelope = linearEnvelope(endOfFadeIn, startOfFadeOut, samples);
     envelopeMax = Math.max.apply(null, envelope)
