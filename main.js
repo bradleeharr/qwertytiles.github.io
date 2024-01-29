@@ -19,44 +19,6 @@ let speed = 60;
 let fps = 60;
 let previousTime = performance.now();
 
-const commonWordsList = [
-    "the", "and", "you", "i", "he", "she", "it", "we", "they", "is",
-    "are", "have", "do", "can", "was", "were", "not", "that", "this", "here",
-    "there", "now", "but", "or", "for", "to", "with", "from", "in", "on",
-    "at", "by", "about", "into", "over", "under", "between", "among", "through",
-    "before", "after", "during", "above", "below", "next", "last", "first",
-    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
-    "ten", "good", "bad", "happy", "sad", "big", "small", "new", "old",
-    "hot", "cold", "high", "low", "day", "night", "sun", "moon", "water",
-    "fire", "air", "earth", "food", "love", "hate", "friend", "enemy", "work",
-    "play", "study", "learn", "eat", "drink", "sleep", "run", "walk", "talk",
-    "listen", "see", "hear", "touch", "feel", "think", "know", "believe",
-    "here", "now", "but", "or", "with", "from", "in", "on", "at", "by",
-    "about", "into", "over", "under", "before", "after", "above", "below",
-    "next", "last", "first", "good", "bad", "happy", "sad", "big", "small",
-    "new", "old", "hot", "cold", "high", "low", "day", "night", "sun", "moon",
-    "water", "fire", "air", "earth", "food", "love", "hate", "friend", "enemy",
-    "work", "play", "study", "learn", "eat", "drink", "sleep", "run", "walk",
-    "talk", "listen", "see", "hear", "touch", "feel", "think", "know", "believe"
-  ];  
-  const rarerWordsList = [
-    "aberration", "obfuscate", "perspicacious", "quixotic", "recalcitrant",
-    "sycophant", "verisimilitude", "zeitgeist", "abstruse", "capricious",
-    "dearth", "ebullient", "facetious", "garrulous", "harangue", "ineffable",
-    "juxtapose", "kowtow", "languid", "mellifluous", "nebulous", "ostracize",
-    "pernicious", "quotidian", "reticent", "sagacious", "tenuous", "ubiquitous",
-    "vacillate", "wistful", "xenophobe", "yuxtaposition", "zephyr",
-    "acquiesce", "bombastic", "cacophony", "disparate", "ephemeral", "fecund",
-    "garrulity", "harbinger", "ineffable", "juxtaposition", "kleptomaniac",
-    "labyrinthine", "mellifluous", "nebulous", "obsequious", "pernicious",
-    "quixotry", "rhapsody", "salient", "trepidation", "ubiquity", "verbose",
-    "whimsical", "xenophile", "yearn", "zenith",
-    "loquacious", "serendipity", "panacea", "ephemeral", "effervescent", "quintessential", "aberrant", "luminous", "ambivalent", "cacophony",
-    "serendipitous", "magnanimous", "melancholy", "vicarious", "perfidious", "ineffable", "ephemeral", "resplendent", "ubiquity", "insidious"
-  ];
-const commonWords = commonWordsList.map(word => word + " ");
-const rarerWords = rarerWordsList.map(word => word + " ");
-
 
 function toggleSound() {
     isSoundMuted = !isSoundMuted;
@@ -113,7 +75,7 @@ function getLetter() {
     console.log(letIdx);
     let letter = currentWord[letIdx++];
     if (letIdx == currentWord.length) {
-        Math.floor(Math.random() * 5) != 1 ? currentWord = getRandomCommonWord() : currentWord = getRandomRarerWord();
+        Math.floor(Math.random() * 10) != 1 ? currentWord = getRandomCommonWord() : currentWord = getRandomRarerWord();
         letIdx = 0;
     }
     return letter;
@@ -262,6 +224,7 @@ var notes = [];
 var volume = 0.5;
 var seconds = 0.3;
 var tones = [392.00, 311.13, 293.66, 261.63, 261.63, 293.66, 311.13, 261.63, 311.13, 392.00, 415.30, 392.00, 349.23, 349.23, 293.66, 261.63, 246.94, 196.00, 246.94, 293.66, 246.94, 293.66, 349.23, 392.00, 415.30, 369.99, 392.00];
+
 
 // Load in notes 
 for (var t = 0; t < tones.length; t++) {
